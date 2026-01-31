@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base href="/">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="Ticketmaster My Events">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Tickets">
+  
+  <title>My Events</title>
+  <link rel="manifest" href="manifest.json">
+
+  <script>
+    // The value below is injected by Flutter during build. 
+    // If it's missing, we hardcode it to 'null' to prevent errors.
+    var serviceWorkerVersion = null;
+  </script>
+</head>
+<body style="background-color: #F5F5F5; margin: 0; padding: 0;">
+  
+  <script src="flutter.js" defer></script>
+  
+  <script>
+    window.addEventListener('load', function(ev) {
+      // Download main.dart.js and initialize the engine
+      _flutter.loader.loadEntrypoint({
+        serviceWorker: {
+          serviceWorkerVersion: serviceWorkerVersion,
+        },
+        onEntrypointLoaded: function(engineInitializer) {
+          engineInitializer.initializeEngine({
+            // Force the renderer to use your local canvaskit files
+            useColorEmoji: true,
+          }).then(function(appRunner) {
+            appRunner.runApp();
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
