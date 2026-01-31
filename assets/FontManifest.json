@@ -1,0 +1,18 @@
+[
+  {
+    "family": "MaterialIcons",
+    "fonts": [
+      {
+        "asset": "assets/fonts/MaterialIcons-Regular.otf"
+      }
+    ]
+  },
+  {
+    "family": "AvertaDemoPE",
+    "fonts": [
+      {
+        "asset": "assets/fonts/AvertaDemoPE-Regular.ttf"
+      }
+    ]
+  }
+]
