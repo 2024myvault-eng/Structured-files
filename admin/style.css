@@ -1,0 +1,473 @@
+/* Ticketmaster-inspired Admin Panel Styles */
+:root {
+    --tm-blue: #0A1E3C;
+    --tm-red: #E53935;
+    --tm-green: #2E7D32;
+    --tm-gray: #F5F5F5;
+    --tm-dark: #333333;
+    --tm-border: #E0E0E0;
+    --tm-light-blue: #E3F2FD;
+    --tm-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 20px;
+    box-shadow: var(--tm-shadow);
+    overflow: hidden;
+}
+
+/* Header */
+.header {
+    background: var(--tm-blue);
+    color: white;
+    padding: 30px;
+    text-align: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+.logo i {
+    font-size: 2.5rem;
+    color: #FFD700;
+}
+
+.logo h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+}
+
+.subtitle {
+    opacity: 0.9;
+    font-size: 1.1rem;
+}
+
+/* Tabs */
+.tabs {
+    display: flex;
+    background: var(--tm-gray);
+    border-bottom: 1px solid var(--tm-border);
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 20px;
+    background: none;
+    border: none;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--tm-dark);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.3s;
+}
+
+.tab-btn:hover {
+    background: rgba(10, 30, 60, 0.05);
+}
+
+.tab-btn.active {
+    background: white;
+    color: var(--tm-blue);
+    border-bottom: 3px solid var(--tm-blue);
+}
+
+/* Tab Content */
+.tab-content {
+    padding: 30px;
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+    animation: fadeIn 0.5s;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Section Headers */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--tm-border);
+}
+
+.section-header h2 {
+    color: var(--tm-blue);
+    font-size: 1.8rem;
+}
+
+.section-header h3 {
+    color: var(--tm-dark);
+    font-size: 1.5rem;
+}
+
+/* Forms */
+.form-card {
+    background: var(--tm-gray);
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 30px;
+    border: 1px solid var(--tm-border);
+}
+
+.form-card h3 {
+    color: var(--tm-blue);
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--tm-border);
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group.full-width {
+    grid-column: 1 / -1;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+}
+
+label {
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--tm-dark);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+input, select, textarea {
+    padding: 12px 15px;
+    border: 2px solid var(--tm-border);
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s;
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--tm-blue);
+    box-shadow: 0 0 0 3px rgba(10, 30, 60, 0.1);
+}
+
+textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Buttons */
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.3s;
+}
+
+.btn-primary {
+    background: var(--tm-blue);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #0B2A5C;
+    transform: translateY(-2px);
+    box-shadow: var(--tm-shadow);
+}
+
+.btn-secondary {
+    background: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #5a6268;
+}
+
+.btn-danger {
+    background: var(--tm-red);
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #d32f2f;
+}
+
+.btn-small {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+}
+
+.form-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid var(--tm-border);
+}
+
+/* Events Grid */
+.events-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 20px;
+}
+
+.event-card {
+    background: white;
+    border: 1px solid var(--tm-border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s;
+}
+
+.event-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--tm-shadow);
+}
+
+.event-image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.event-content {
+    padding: 20px;
+}
+
+.event-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--tm-blue);
+    margin-bottom: 10px;
+}
+
+.event-meta {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+    line-height: 1.5;
+}
+
+.event-actions {
+    display: flex;
+    gap: 10px;
+}
+
+/* Transfer Steps */
+.transfer-step {
+    display: none;
+}
+
+.transfer-step.active {
+    display: block;
+}
+
+.success-card, .error-card {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    text-align: center;
+    border: 1px solid var(--tm-border);
+}
+
+.success-icon, .error-icon {
+    font-size: 4rem;
+    margin-bottom: 20px;
+}
+
+.success-icon {
+    color: var(--tm-green);
+}
+
+.error-icon {
+    color: var(--tm-red);
+}
+
+.success-details, .error-details {
+    background: var(--tm-gray);
+    padding: 20px;
+    border-radius: 10px;
+    margin: 25px 0;
+    text-align: left;
+}
+
+.detail-item {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.detail-item .label {
+    font-weight: 600;
+    width: 120px;
+    color: var(--tm-dark);
+}
+
+.detail-item .value {
+    flex: 1;
+}
+
+.error-code {
+    background: var(--tm-red);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    display: inline-block;
+    margin-bottom: 15px;
+}
+
+/* Info Box */
+.info-box {
+    background: var(--tm-light-blue);
+    border-left: 4px solid var(--tm-blue);
+    padding: 15px;
+    border-radius: 0 8px 8px 0;
+    margin-top: 20px;
+    display: flex;
+    gap: 15px;
+}
+
+.info-box i {
+    color: var(--tm-blue);
+    font-size: 1.2rem;
+    margin-top: 3px;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    max-width: 500px;
+    width: 90%;
+    position: relative;
+}
+
+.close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 28px;
+    cursor: pointer;
+    color: #666;
+}
+
+.ticket-details {
+    padding: 20px;
+    background: var(--tm-gray);
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+/* Footer */
+.footer {
+    background: var(--tm-dark);
+    color: white;
+    padding: 20px;
+    text-align: center;
+    margin-top: 30px;
+}
+
+.footer .small {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    margin-top: 5px;
+}
+
+/* Loading States */
+.loading {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+    font-style: italic;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .tabs {
+        flex-direction: column;
+    }
+    
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .events-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .header {
+        padding: 20px;
+    }
+    
+    .logo h1 {
+        font-size: 1.8rem;
+    }
+}

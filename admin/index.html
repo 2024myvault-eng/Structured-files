@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For You Admin Powerhouse</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Ticketmaster-like styling -->
+    <style>
+        :root {
+            --tm-blue: #0A1E3C;
+            --tm-red: #E53935;
+            --tm-green: #2E7D32;
+            --tm-gray: #F5F5F5;
+            --tm-light-blue: #E3F2FD;
+        }
+        
+        /* Date format helper */
+        .date-helper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+            padding: 10px;
+            background: #f0f8ff;
+            border-radius: 5px;
+            border-left: 3px solid #0A1E3C;
+        }
+        
+        .date-example {
+            font-family: monospace;
+            background: white;
+            padding: 5px 10px;
+            border-radius: 3px;
+            border: 1px solid #ddd;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        
+        .date-example:hover {
+            background: #0A1E3C;
+            color: white;
+        }
+        
+        /* Copy button */
+        .copy-btn {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            padding: 3px 8px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        
+        .copy-btn:hover {
+            background: #0A1E3C;
+            color: white;
+        }
+        
+        /* Quick time buttons */
+        .time-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .time-btn {
+            padding: 5px 10px;
+            background: #f0f8ff;
+            border: 1px solid #0A1E3C;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        
+        .time-btn:hover {
+            background: #0A1E3C;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-crown"></i>
+                <h1>For You Admin Powerhouse</h1>
+            </div>
+            <p class="subtitle">Central management for events, tickets, and user identity</p>
+            <div style="margin-top: 10px; font-size: 0.9rem; opacity: 0.8;">
+                <i class="fas fa-clock"></i> All times in Eastern Time (ET)
+            </div>
+        </header>
+
+        <!-- Tabs Navigation -->
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="events">
+                <i class="fas fa-calendar-plus"></i> Event Generator
+            </button>
+            <button class="tab-btn" data-tab="identity">
+                <i class="fas fa-user-edit"></i> Identity Override
+            </button>
+            <button class="tab-btn" data-tab="transfers">
+                <i class="fas fa-exchange-alt"></i> Transfer Simulator
+            </button>
+            <button class="tab-btn" data-tab="help">
+                <i class="fas fa-question-circle"></i> Quick Help
+            </button>
+        </div>
+
+        <!-- Events Tab -->
+        <div id="events" class="tab-content active">
+            <div class="section-header">
+                <h2><i class="fas fa-magic"></i> Dynamic Event Generator</h2>
+                <p>Create upcoming or past ticket objects with 1:1 Ticketmaster fidelity</p>
+            </div>
+
+            <form id="eventForm" class="form-card">
+                <h3>Create New Event/Ticket</h3>
+                
+                <div class="form-grid">
+                    <!-- Basic Info -->
+                    <div class="form-group">
+                        <label for="title"><i class="fas fa-heading"></i> Show Title *</label>
+                        <input type="text" id="title" placeholder="Taylor Swift | The Eras Tour" required>
+                    </div>
+                    
+                    <div class="form-group" style="position: relative;">
+                        <label for="date"><i class="fas fa-calendar"></i> Date & Time * (Eastern Time)</label>
+                        <input type="text" id="date" placeholder="Example: Dec 31, 2024 8:00 PM" required>
+                        <button type="button" class="copy-btn" onclick="copyCurrentDateTime()">
+                            <i class="far fa-copy"></i> Copy Now
+                        </button>
+                        
+                        <div class="date-helper">
+                            <strong>Quick formats (click to use):</strong><br>
+                            <span class="date-example" onclick="setDateExample('today')">Today 8:00 PM</span>
+                            <span class="date-example" onclick="setDateExample('tomorrow')">Tomorrow 7:30 PM</span>
+                            <span class="date-example" onclick="setDateExample('nextweek')">Next Saturday 9:00 PM</span>
+                            <span class="date-example" onclick="setDateExample('christmas')">Dec 25, 2024 8:00 PM</span>
+                            <span class="date-example" onclick="setDateExample('nye')">Dec 31, 2024 11:59 PM</span>
+                        </div>
+                        
+                        <div class="time-buttons">
+                            <span style="font-weight: 600;">Quick times:</span>
+                            <span class="time-btn" onclick="appendTime('12:00 PM')">12:00 PM</span>
+                            <span class="time-btn" onclick="appendTime('2:00 PM')">2:00 PM</span>
+                            <span class="time-btn" onclick="appendTime('4:00 PM')">4:00 PM</span>
+                            <span class="time-btn" onclick="appendTime('7:00 PM')">7:00 PM</span>
+                            <span class="time-btn" onclick="appendTime('8:00 PM')">8:00 PM</span>
+                            <span class="time-btn" onclick="appendTime('9:00 PM')">9:00 PM</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="venue"><i class="fas fa-building"></i> Venue *</label>
+                        <input type="text" id="venue" placeholder="SoFi Stadium, Los Angeles, CA" required>
+                    </div>
+                    
+                    <!-- Seat Info -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="section"><i class="fas fa-th-large"></i> Section</label>
+                            <input type="text" id="section" placeholder="A">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="row"><i class="fas fa-bars"></i> Row</label>
+                            <input type="text" id="row" placeholder="12">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="seat"><i class="fas fa-chair"></i> Seat</label>
+                            <input type="text" id="seat" placeholder="34">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="ticketLevel"><i class="fas fa-star"></i> Ticket Level</label>
+                        <select id="ticketLevel">
+                            <option value="VIP">VIP</option>
+                            <option value="Premium">Premium</option>
+                            <option value="Standard" selected>Standard</option>
+                            <option value="Balcony">Balcony</option>
+                            <option value="Floor">Floor</option>
+                            <option value="Club">Club</option>
+                        </select>
+                    </div>
+                    
+                    <!-- URLs -->
+                    <div class="form-group">
+                        <label for="imageUrl"><i class="fas fa-image"></i> Image URL</label>
+                        <input type="url" id="imageUrl" placeholder="https://example.com/event-image.jpg">
+                        <small style="color: #666; font-size: 0.8rem;">Leave blank for default event image</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="flagUrl"><i class="fas fa-flag"></i> Flag URL</label>
+                        <input type="url" id="flagUrl" placeholder="https://example.com/flag.png">
+                        <small style="color: #666; font-size: 0.8rem;">For country flags (optional)</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="directionsUrl"><i class="fas fa-directions"></i> Directions URL</label>
+                        <input type="url" id="directionsUrl" placeholder="https://maps.google.com/?q=Venue">
+                        <small style="color: #666; font-size: 0.8rem;">Google Maps link (optional)</small>
+                    </div>
+                    
+                    <!-- Financials -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="numTickets"><i class="fas fa-ticket-alt"></i> Number of Tickets</label>
+                            <input type="number" id="numTickets" value="1" min="1" max="10">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="totalAmount"><i class="fas fa-dollar-sign"></i> Total Amount ($)</label>
+                            <input type="number" id="totalAmount" step="0.01" placeholder="0.00">
+                            <small style="color: #666; font-size: 0.8rem;">Per ticket total</small>
+                        </div>
+                    </div>
+                    
+                    <!-- Status -->
+                    <div class="form-group">
+                        <label for="status"><i class="fas fa-exchange-alt"></i> Status</label>
+                        <select id="status">
+                            <option value="upcoming">Upcoming</option>
+                            <option value="past">Past</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-plus-circle"></i> Create Event
+                    </button>
+                    <button type="button" class="btn btn-secondary" id="clearForm">
+                        <i class="fas fa-eraser"></i> Clear Form
+                    </button>
+                    <button type="button" class="btn btn-small" onclick="fillSampleData()">
+                        <i class="fas fa-vial"></i> Fill Sample
+                    </button>
+                </div>
+            </form>
+            
+            <!-- Events List -->
+            <div class="section-header">
+                <h3><i class="fas fa-list"></i> Existing Events</h3>
+                <div>
+                    <button class="btn btn-small" id="refreshEvents">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                    <button class="btn btn-small btn-secondary" onclick="exportEvents()">
+                        <i class="fas fa-download"></i> Export
+                    </button>
+                </div>
+            </div>
+            
+            <div id="eventsList" class="events-grid">
+                <!-- Events will be loaded here -->
+                <div class="loading">Loading events...</div>
+            </div>
+        </div>
+
+        <!-- Identity Tab -->
+        <div id="identity" class="tab-content">
+            <div class="section-header">
+                <h2><i class="fas fa-user-cog"></i> User Identity Override</h2>
+                <p>Override how your information appears in the Account Section</p>
+            </div>
+            
+            <form id="identityForm" class="form-card">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="fullName"><i class="fas fa-user"></i> Full Name</label>
+                        <input type="text" id="fullName" placeholder="John Ticketmaster">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email"><i class="fas fa-envelope"></i> Email</label>
+                        <input type="email" id="email" placeholder="john@example.com">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="location"><i class="fas fa-map-marker-alt"></i> Location</label>
+                        <input type="text" id="location" placeholder="Los Angeles, CA, USA">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="username"><i class="fas fa-at"></i> Username</label>
+                        <input type="text" id="username" placeholder="johntix">
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Save Identity Override
+                    </button>
+                    <button type="button" class="btn btn-secondary" id="loadIdentity">
+                        <i class="fas fa-download"></i> Load Current
+                    </button>
+                    <button type="button" class="btn btn-small" onclick="fillSampleIdentity()">
+                        <i class="fas fa-user-check"></i> Fill Sample
+                    </button>
+                </div>
+            </form>
+            
+            <div class="info-box">
+                <i class="fas fa-info-circle"></i>
+                <div>
+                    <p><strong>How this works:</strong> These fields override the default values in your Account Section.</p>
+                    <p>The original values remain unchanged in the database. Override is stored in <code>user_profiles</code> table.</p>
+                    <p><strong>Note:</strong> To see changes in your Flutter app, modify its PHP backend to check <code>user_profiles</code> table first.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Transfers Tab -->
+        <div id="transfers" class="tab-content">
+            <div class="section-header">
+                <h2><i class="fas fa-exchange-alt"></i> Ticket Transfer Simulator</h2>
+                <p>Mirror the Ticketmaster Transfer UX with 1:1 fidelity</p>
+            </div>
+            
+            <!-- Step 1: Data Entry -->
+            <div id="step1" class="transfer-step active">
+                <div class="form-card">
+                    <h3><i class="fas fa-edit"></i> Step 1: Enter Recipient Details</h3>
+                    
+                    <form id="transferForm">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="firstName"><i class="fas fa-user"></i> First Name *</label>
+                                <input type="text" id="firstName" placeholder="John" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="lastName"><i class="fas fa-user"></i> Last Name *</label>
+                                <input type="text" id="lastName" placeholder="Doe" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="recipientEmail"><i class="fas fa-envelope"></i> Email *</label>
+                                <input type="email" id="recipientEmail" placeholder="john@example.com" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="eventSelect"><i class="fas fa-ticket-alt"></i> Select Event *</label>
+                                <select id="eventSelect" required>
+                                    <option value="">Loading events...</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group full-width">
+                                <label for="note"><i class="fas fa-sticky-note"></i> Note (Optional)</label>
+                                <textarea id="note" rows="3" placeholder="Add a personal message..."></textarea>
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-forward"></i> Proceed to Transfer
+                            </button>
+                            <button type="button" class="btn btn-secondary" id="triggerError">
+                                <i class="fas fa-bug"></i> Simulate Error
+                            </button>
+                            <button type="button" class="btn btn-small" onclick="fillSampleTransfer()">
+                                <i class="fas fa-vial"></i> Fill Sample
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Step 2: Success -->
+            <div id="step2" class="transfer-step">
+                <div class="success-card">
+                    <div class="success-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h3><i class="fas fa-check"></i> Transfer Successful!</h3>
+                    
+                    <div class="success-details">
+                        <div class="detail-item">
+                            <span class="label">Recipient:</span>
+                            <span id="successName" class="value">John Doe</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">Email:</span>
+                            <span id="successEmail" class="value">john@example.com</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">Order Number:</span>
+                            <span id="orderNumber" class="value">TM-20240131-ABC123</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">Note:</span>
+                            <span id="successNote" class="value">Enjoy the show!</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button class="btn btn-danger" id="cancelTransfer">
+                            <i class="fas fa-times-circle"></i> Cancel Transfer
+                        </button>
+                        <button class="btn btn-secondary" id="newTransfer">
+                            <i class="fas fa-redo"></i> New Transfer
+                        </button>
+                        <button class="btn btn-small" onclick="printTransfer()">
+                            <i class="fas fa-print"></i> Print Receipt
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Step 3: Error -->
+            <div id="step3" class="transfer-step">
+                <div class="error-card">
+                    <div class="error-icon">
+                        <i class="fas fa-exclamation-circle"></i>
+                    </div>
+                    <h3><i class="fas fa-times"></i> Transfer Failed</h3>
+                    
+                    <div class="error-details">
+                        <div class="error-code">
+                            Error Code: <span id="errorCode">d34753K</span>
+                        </div>
+                        <p>Transfer failed due to system constraints. Please try again later.</p>
+                        <p style="margin-top: 10px; font-size: 0.9rem;">
+                            <i class="fas fa-info-circle"></i> This simulates the exact error code you requested.
+                        </p>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button class="btn btn-primary" id="errorOk">
+                            <i class="fas fa-check"></i> OK
+                        </button>
+                        <button class="btn btn-small" onclick="retryTransfer()">
+                            <i class="fas fa-redo"></i> Retry
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Help Tab -->
+        <div id="help" class="tab-content">
+            <div class="section-header">
+                <h2><i class="fas fa-question-circle"></i> Quick Help & Date Formats</h2>
+                <p>Everything you need to know about using the Admin Powerhouse</p>
+            </div>
+            
+            <div class="form-card">
+                <h3><i class="fas fa-calendar-alt"></i> Date & Time Format Guide</h3>
+                
+                <div style="display: grid; gap: 20px; margin-top: 20px;">
+                    <div>
+                        <h4>📅 Accepted Formats (Eastern Time):</h4>
+                        <div style="background: #f5f5f5; padding: 15px; border-radius: 5px; font-family: monospace; line-height: 2;">
+                            <div>• Dec 31, 2024 8:00 PM</div>
+                            <div>• December 31, 2024 20:00</div>
+                            <div>• 12/31/2024 8:00 PM</div>
+                            <div>• 2024-12-31 20:00:00</div>
+                            <div>• Tomorrow 7:30 PM</div>
+                            <div>• Next Friday 9:00 PM</div>
+                            <div>• Christmas 8:00 PM</div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4>⏰ Common Event Times:</h4>
+                        <div class="time-buttons" style="margin-top: 10px;">
+                            <span class="time-btn" onclick="navigateToEvents()">7:00 PM</span>
+                            <span class="time-btn" onclick="navigateToEvents()">7:30 PM</span>
+                            <span class="time-btn" onclick="navigateToEvents()">8:00 PM</span>
+                            <span class="time-btn" onclick="navigateToEvents()">8:30 PM</span>
+                            <span class="time-btn" onclick="navigateToEvents()">9:00 PM</span>
+                            <span class="time-btn" onclick="navigateToEvents()">10:00 PM</span>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4>🎯 Quick Tips:</h4>
+                        <ul style="line-height: 1.8; padding-left: 20px;">
+                            <li>Click "Copy Now" to insert current date/time</li>
+                            <li>Click any format example to use it</li>
+                            <li>Use "Fill Sample" for testing</li>
+                            <li>Dates are converted to Eastern Time automatically</li>
+                            <li>You can copy-paste from any calendar app</li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h4>🔗 Database Integration:</h4>
+                        <p style="background: #e3f2fd; padding: 10px; border-radius: 5px;">
+                            <strong>Table:</strong> <code>events</code><br>
+                            <strong>Column:</strong> <code>date_time</code> (stored as YYYY-MM-DD HH:MM:SS)<br>
+                            <strong>Time Zone:</strong> Eastern Time (automatically converted)
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p><i class="fas fa-shield-alt"></i> For You Admin Powerhouse v1.0 | Ticketmaster Fidelity System</p>
+            <p class="small">All changes are reflected in real-time. Events created here appear in "My Events" automatically.</p>
+            <p class="small" style="margin-top: 5px;">
+                <i class="fas fa-database"></i> Database: shopkzwc_shopeagle | 
+                <i class="fas fa-clock"></i> Time Zone: Eastern (ET)
+            </p>
+        </footer>
+    </div>
+
+    <!-- Modal for View Ticket -->
+    <div id="ticketModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3><i class="fas fa-ticket-alt"></i> Ticket Details</h3>
+            <div id="ticketDetails" class="ticket-details">
+                <!-- Ticket details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Date helper script -->
+    <script>
+        // Date and time helper functions
+        function copyCurrentDateTime() {
+            const now = new Date();
+            const options = { 
+                month: 'short', 
+                day: 'numeric', 
+                year: 'numeric',
+                hour: 'numeric',
+                minute: '2-digit',
+                hour12: true
+            };
+            const dateStr = now.toLocaleDateString('en-US', options);
+            document.getElementById('date').value = dateStr;
+            showNotification('Current date/time copied!', 'success');
+        }
+        
+        function setDateExample(type) {
+            const now = new Date();
+            let date = new Date();
+            
+            switch(type) {
+                case 'today':
+                    date.setHours(20, 0, 0);
+                    break;
+                case 'tomorrow':
+                    date.setDate(now.getDate() + 1);
+                    date.setHours(19, 30, 0);
+                    break;
+                case 'nextweek':
+                    // Next Saturday
+                    const daysUntilSaturday = (6 - now.getDay() + 7) % 7 || 7;
+                    date.setDate(now.getDate() + daysUntilSaturday);
+                    date.setHours(21, 0, 0);
+                    break;
+                case 'christmas':
+                    date = new Date(now.getFullYear(), 11, 25, 20, 0, 0);
+                    break;
+                case 'nye':
+                    date = new Date(now.getFullYear(), 11, 31, 23, 59, 0);
+                    break;
+            }
+            
+            const options = { 
+                month: 'short', 
+                day: 'numeric', 
+                year: 'numeric',
+                hour: 'numeric',
+                minute: '2-digit',
+                hour12: true
+            };
+            
+            document.getElementById('date').value = date.toLocaleDateString('en-US', options);
+            showNotification('Date example applied!', 'success');
+        }
+        
+        function appendTime(timeStr) {
+            const dateField = document.getElementById('date');
+            const currentValue = dateField.value;
+            
+            // If no date is entered, use today
+            if (!currentValue.trim()) {
+                const today = new Date();
+                const datePart = today.toLocaleDateString('en-US', { 
+                    month: 'short', 
+                    day: 'numeric', 
+                    year: 'numeric' 
+                });
+                dateField.value = datePart + ' ' + timeStr;
+            } else {
+                // Replace time part if exists, otherwise append
+                const timeRegex = /\d{1,2}:\d{2}\s*(AM|PM)?/i;
+                if (timeRegex.test(currentValue)) {
+                    dateField.value = currentValue.replace(timeRegex, timeStr);
+                } else {
+                    dateField.value = currentValue + ' ' + timeStr;
+                }
+            }
+            showNotification('Time added!', 'success');
+        }
+        
+        function fillSampleData() {
+            document.getElementById('title').value = 'Taylor Swift | The Eras Tour';
+            document.getElementById('date').value = 'Dec 15, 2024 7:30 PM';
+            document.getElementById('venue').value = 'SoFi Stadium, Inglewood, CA';
+            document.getElementById('section').value = 'A';
+            document.getElementById('row').value = '12';
+            document.getElementById('seat').value = '34';
+            document.getElementById('ticketLevel').value = 'VIP';
+            document.getElementById('imageUrl').value = 'https://images.unsplash.com/photo-1501281668745-f6f2613e6e20?w=800';
+            document.getElementById('flagUrl').value = 'https://flagcdn.com/w320/us.png';
+            document.getElementById('directionsUrl').value = 'https://goo.gl/maps/SoFiStadium';
+            document.getElementById('numTickets').value = '2';
+            document.getElementById('totalAmount').value = '899.98';
+            
+            showNotification('Sample data filled!', 'success');
+        }
+        
+        function fillSampleIdentity() {
+            document.getElementById('fullName').value = 'John Ticketmaster';
+            document.getElementById('email').value = 'john@example.com';
+            document.getElementById('location').value = 'Los Angeles, CA, USA';
+            document.getElementById('username').value = 'johntix';
+            
+            showNotification('Sample identity filled!', 'success');
+        }
+        
+        function fillSampleTransfer() {
+            document.getElementById('firstName').value = 'John';
+            document.getElementById('lastName').value = 'Doe';
+            document.getElementById('recipientEmail').value = 'john@example.com';
+            document.getElementById('note').value = 'Enjoy the show! Hope you have a great time!';
+            
+            showNotification('Sample transfer filled!', 'success');
+        }
+        
+        function navigateToEvents() {
+            document.querySelector('[data-tab="events"]').click();
+        }
+        
+        function exportEvents() {
+            // Simple export function
+            const events = document.querySelectorAll('.event-card');
+            if (events.length === 0) {
+                showNotification('No events to export', 'info');
+                return;
+            }
+            
+            let exportData = 'Event Name,Date,Venue,Section,Row,Seat,Status\n';
+            events.forEach(event => {
+                const title = event.querySelector('.event-title')?.textContent || '';
+                const meta = event.querySelector('.event-meta');
+                const lines = meta?.textContent.split('\n').map(l => l.trim()).filter(l => l) || [];
+                
+                let date = '', venue = '', section = '', row = '', seat = '', status = '';
+                
+                lines.forEach(line => {
+                    if (line.includes('fa-calendar')) date = line.replace('📅', '').trim();
+                    if (line.includes('fa-map-marker-alt')) venue = line.replace('📍', '').trim();
+                    if (line.includes('fa-chair')) {
+                        const seatInfo = line.replace('💺', '').trim().split(',');
+                        section = seatInfo[0]?.trim() || '';
+                        row = seatInfo[1]?.replace('Row', '').trim() || '';
+                        seat = seatInfo[2]?.replace('Seat', '').trim() || '';
+                    }
+                    if (line.includes('Status:')) status = line.split('|')[0]?.replace('Status:', '').trim() || '';
+                });
+                
+                exportData += `"${title}","${date}","${venue}","${section}","${row}","${seat}","${status}"\n`;
+            });
+            
+            // Create download link
+            const blob = new Blob([exportData], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'events-export.csv';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+            
+            showNotification('Events exported to CSV!', 'success');
+        }
+        
+        function printTransfer() {
+            window.print();
+        }
+        
+        function retryTransfer() {
+            document.getElementById('errorOk').click();
+        }
+        
+        // Helper for notifications
+        function showNotification(message, type = 'info') {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+                <span>${message}</span>
+                <button onclick="this.parentElement.remove()">&times;</button>
+            `;
+            
+            // Add styles
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? '#2E7D32' : type === 'error' ? '#E53935' : '#0A1E3C'};
+                color: white;
+                padding: 15px 20px;
+                border-radius: 8px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                z-index: 9999;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+                animation: slideIn 0.3s ease-out;
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Auto-remove after 5 seconds
+            setTimeout(() => {
+                if (notification.parentElement) {
+                    notification.remove();
+                }
+            }, 5000);
+        }
+    </script>
+
+    <script src="script.js"></script>
+</body>
+</html>
