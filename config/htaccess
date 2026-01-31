@@ -1,0 +1,19 @@
+# Prevent direct directory listing
+Options -Indexes
+
+# Protect config files
+<FilesMatch "\.(php|ini|log)$">
+    Order Deny,Allow
+    Deny from all
+</FilesMatch>
+
+# Allow access to specific PHP files
+<Files "admin-ajax-handler.php">
+    Order Allow,Deny
+    Allow from all
+</Files>
+
+# Enable CORS for Flutter web
+Header set Access-Control-Allow-Origin "*"
+Header set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+Header set Access-Control-Allow-Headers "Content-Type, Authorization"
